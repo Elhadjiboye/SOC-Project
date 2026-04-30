@@ -1,0 +1,19 @@
+#!/bin/bash
+
+WEBHOOK_URL="YOUR WEBHOOK"
+
+ALERT_FILE="$1"
+
+SRC_IP=$(grep -o '"src_ip":"[^"]*' "$ALERT_FILE" | cut -d'"' -f4)
+STAGE=$(grep -o '"attack_stage":"[^"]*' "$ALERT_FILE" | cut -d'"' -f4)
+SCORE=$(grep -o '"score":"[^"]*' "$ALERT_FILE" | cut -d'"' -f4)
+REASON=$(grep -o '"reason":"[^"]*' "$ALERT_FILE" | cut -d'"' -f4)
+
+MESSAGE="🚨 SOC ALERT\nIP: $SRC_IP\nStage: $STAGE\nScore: $SCORE\nReason: $REASON"
+
+JSON=$(printf '{"content":"%s"}' "$MESSAGE")
+
+curl -s -H "Content-Type: application/json" \
+  -X POST \
+  -d "$JSON" \
+  "$WEBHOOK_URL"

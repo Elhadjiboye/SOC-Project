@@ -1,0 +1,29 @@
+<group name="soc_correlator,">
+  <rule id="100300" level="10">
+    <decoded_as>json</decoded_as>
+    <field name="sensor">raspberry-soc-node</field>
+    <description>SOC Correlator incident: $(attack_stage) from $(src_ip), score $(score)</description>
+  </rule>
+
+  <rule id="100301" level="12">
+    <if_sid>100300</if_sid>
+    <field name="severity">high|critical</field>
+    <description>HIGH SOC Correlator incident: $(attack_stage) from $(src_ip), score $(score)</description>
+  </rule>
+</group>
+
+<group name="soc_response,">
+  <rule id="100310" level="12">
+    <if_group>soc_correlator</if_group>
+    <field name="data.response.blocked">true</field>
+    <description>Automated response: IP blocked by SOC correlator - </description>
+  </rule>
+</group>
+
+<group name="soc_response,">
+  <rule id="100311" level="13">
+    <if_sid>100301</if_sid>
+    <field name="response.blocked">true</field>
+    <description>Automated response: IP blocked by SOC correlator - </description>
+  </rule>
+</group>

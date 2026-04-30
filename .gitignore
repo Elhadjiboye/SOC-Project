@@ -1,0 +1,9 @@
+logs/
+*.log
+*.json
+.env
+__pycache__/
+*.pyc
+.DS_Store
+cowrie-full/
+wazuh-indexer-data/
